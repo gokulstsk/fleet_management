@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Login </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}"/>
+<style>
+  body{
+
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-size: cover;
+
+  }
+</style>
+
+  </head>
+  <body>
+  <div class="container" id="container">
+
+
+
+
+
+      <div class="form-container sign-in-container">
+        <form method="post" id="admin_form" action="/admin/login">
+          <h1> LOGIN </h1>
+
+          <span></span>
+          <input type="text" placeholder="Username" name="admin" id="admin"  required/>
+          <input type="password" placeholder="Password" name="pwd" id="pwd" required/>
+       <!--   <a href="#">Forgot your password?</a>-->
+<!--          <button style="background: linear-gradient(to top left ,#0068FF  0%,  #6dd5ed 100%);" type="submit">Sign In</button>-->
+                      <a href="{{url_for('dashboard')}}"><button style="background: linear-gradient(to top left ,#0068FF  0%,  #6dd5ed 100%);" type="button"> Sign In</button></a>
+
+           <div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;">Incorrect Username password</div>
+        </form>
+      </div>
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>Hello User!</h1>
+            <p>Please login with your personal info</p>
+            <button class="ghost" id="signIn">Admin</button>
+          </div>
+          <div class="overlay-panel overlay-right" style="background: linear-gradient(to top left,#0068FF  0%,  rgba(0,0,0,0) 100%);"><!--#FF9700-->
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <script src="https://code.jquery.com/jquery-3.5.1.js"
+          integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+          crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $(document).on('submit','#admin_form',function(e)
+                   {
+      e.preventDefault();
+      $.ajax({
+        type:'POST',
+        url:'/admin/login',
+        data:{
+          admin:$("#admin").val(),
+          pwd:$("#pwd").val()
+        }
+      })
+
+      .done(function(data) {
+        if (data.success=='admin') {
+                  console.log("admin")
+                  window.location.href = "/admin_analytics/home";
+			      }
+
+			else if (data.success=='data_entry') {
+                  window.location.href = "/data_entry/home";
+			      }
+
+			else if(data.success=='error') {
+              console.log ("error")
+              swal("Wrong Credentials !!", "Please check your Username and Password !", "error");
+
+
+			      }
+		});
+
+    });
+
+
+
+
+
+
+
+  </script>
+ <script src=" {{url_for('static', filename='js/main.js')}}"></script>
+  </body>
+</html>
